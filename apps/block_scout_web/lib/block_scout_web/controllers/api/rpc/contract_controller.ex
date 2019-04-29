@@ -15,6 +15,9 @@ defmodule BlockScoutWeb.API.RPC.ContractController do
          preloaded_smart_contract <- SmartContract.preload_decompiled_smart_contract(smart_contract) do
       render(conn, :verify, %{contract: preloaded_smart_contract, address_hash: address_hash})
     else
+      {:publish, {:error, error}} ->
+        render(conn, :error, error: error)
+
       {:publish, _} ->
         render(conn, :error, error: "Something went wrong while publishing the contract.")
 
